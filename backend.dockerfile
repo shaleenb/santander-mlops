@@ -1,4 +1,4 @@
-FROM --platform=linux/x86_64 python:3.11-slim
+FROM --platform=linux/amd64 python:3.11-slim
 
 ARG model
 

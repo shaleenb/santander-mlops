@@ -1,7 +1,4 @@
-FROM --platform=linux/x86_64 python:3.11-slim
-
-ARG server_url
-ENV PREDICTION_SERVICE_URL ${server_url}
+FROM --platform=linux/amd64 python:3.11-slim
 
 WORKDIR /app
 
@@ -12,4 +9,4 @@ COPY ./frontend/app.py /app/
 
 EXPOSE 8501
 
-CMD streamlit run app.py --server.port=8501 --server.address=0.0.0.0 -- --prediction-service-url=${PREDICTION_SERVICE_URL}
+CMD streamlit run app.py --server.port=8501 --server.address=0.0.0.0
