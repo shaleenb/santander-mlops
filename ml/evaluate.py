@@ -16,9 +16,9 @@ def evaluate_model(model, X_test, y_test):
 
 
 def main(
-    data_file_path: str = typer.Argument(..., help="Path to the test data file."),
-    id_column: str = typer.Argument(default="ID_code", help="The name of the ID column."),
-    model_file_path: str = typer.Argument(..., help="Path to the trained model file."),
+    data_file_path: str = typer.Option(..., help="Path to the test data file."),
+    id_column: str = typer.Option(default="ID_code", help="The name of the ID column."),
+    model_file_path: str = typer.Option(..., help="Path to the trained model file."),
 ):
     # Load test data
     df_test = load_data(data_file_path)

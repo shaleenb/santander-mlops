@@ -34,9 +34,9 @@ def save_model(model, filepath):
 
 
 def main(
-    data_file_path: str = typer.Argument(..., help="Path to the training data file."),
-    id_column: str = typer.Argument(default="ID_code", help="The name of the ID column."),
-    model_file_path: str = typer.Argument(..., help="Path to save the trained model."),
+    data_file_path: str = typer.Option(..., help="Path to the training data file."),
+    id_column: str = typer.Option(default="ID_code", help="The name of the ID column."),
+    model_file_path: str = typer.Option(..., help="Path to save the trained model."),
 ):
     df = load_data(data_file_path)
     X = df.drop(["target", id_column], axis=1, errors="ignore")
