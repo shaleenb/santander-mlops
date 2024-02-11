@@ -13,7 +13,16 @@ def train_model(X, y):
     pipeline = Pipeline(
         [
             ("feature_engineering", FeatureEngineering(features=features)),
-            ("classifier", RandomForestClassifier(n_estimators=100, max_depth=10, random_state=42)),
+            (
+                "classifier",
+                RandomForestClassifier(
+                    n_estimators=200,
+                    max_depth=10,
+                    n_jobs=-1,
+                    random_state=42,
+                    class_weight="balanced",
+                ),
+            ),
         ]
     )
     pipeline.fit(X, y)
