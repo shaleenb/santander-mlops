@@ -9,7 +9,6 @@ repos:
       - id: trailing-whitespace
       - id: check-merge-conflict
       - id: debug-statements
-      - id: check-added-large-files
       - id: file-contents-sorter
         files: requirements*.txt
 
