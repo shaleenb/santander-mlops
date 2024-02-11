@@ -4,8 +4,6 @@ services:
     build:
       context: ./
       dockerfile: backend.dockerfile
-      args:
-        - model=rf_model.joblib
     ports:
       - "8000:8000"
 
