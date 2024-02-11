@@ -1,0 +1,17 @@
+name: Frontend Docker Image CI
+
+on:
+  push:
+    branches: [ "main" ]
+    paths: ["frontend/**"]
+  pull_request:
+    branches: [ "main" ]
+    paths: ["frontend/**"]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+    - name: Build the Docker image
+      run: docker build . --file Dockerfile --tag shabenga/santander-mlops-frontend:$(date +%s)
