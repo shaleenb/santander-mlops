@@ -11,4 +11,4 @@ COPY ./backend/api.py /app/
 
 COPY ./ml/models/${model} /app/models/model.joblib
 
-CMD ["uvicorn", "api:app", "--host", "0.0.0.0", "--port", "80"]
+CMD ["uvicorn", "api:app", "--host", "0.0.0.0", "--port", "8000"]

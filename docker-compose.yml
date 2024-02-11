@@ -7,14 +7,14 @@ services:
       args:
         - model=rf_model.joblib
     ports:
-      - "80:80"
+      - "8000:8000"
 
   frontend:
     build:
       context: ./frontend
       dockerfile: Dockerfile
       args:
-        - server_url=http://backend:80
+        - server_url=http://backend:8000
     ports:
       - "8501:8501"
     depends_on:
