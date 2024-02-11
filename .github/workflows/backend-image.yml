@@ -3,10 +3,10 @@ name: Backend Docker Image CI
 on:
   push:
     branches: ["main"]
-    paths: ["backend/**"]
+    paths: ["backend/**", "ml/models/model.joblib"]
   pull_request:
     branches: ["main"]
-    paths: ["backend/**"]
+    paths: ["backend/**", "ml/models/model.joblib"]
   workflow_dispatch:
     inputs:
       docker_tag:
