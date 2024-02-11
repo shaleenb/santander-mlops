@@ -1,0 +1,21 @@
+version: '3.8'
+services:
+  backend:
+    build:
+      context: ./
+      dockerfile: backend/Dockerfile
+      args:
+        - model=rf_model.joblib
+    ports:
+      - "80:80"
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+      args:
+        - server_url=http://backend:80
+    ports:
+      - "8501:8501"
+    depends_on:
+      - backend
