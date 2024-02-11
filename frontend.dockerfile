@@ -1,4 +1,4 @@
-FROM python:3.11
+FROM python:3.11-slim
 
 ARG server_url
 ENV PREDICTION_SERVICE_URL ${server_url}
