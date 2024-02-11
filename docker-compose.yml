@@ -3,7 +3,7 @@ services:
   backend:
     build:
       context: ./
-      dockerfile: backend/Dockerfile
+      dockerfile: backend.dockerfile
       args:
         - model=rf_model.joblib
     ports:
@@ -11,8 +11,8 @@ services:
 
   frontend:
     build:
-      context: ./frontend
-      dockerfile: Dockerfile
+      context: ./
+      dockerfile: frontend.dockerfile
       args:
         - server_url=http://backend:8000
     ports:

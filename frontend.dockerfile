@@ -5,10 +5,10 @@ ENV PREDICTION_SERVICE_URL ${server_url}
 
 WORKDIR /app
 
-COPY ./requirements.txt /app/requirements.txt
+COPY ./frontend/requirements.txt /app/requirements.txt
 RUN pip install --no-cache-dir -r requirements.txt
 
-COPY app.py /app/
+COPY ./frontend/app.py /app/
 
 EXPOSE 8501
 
