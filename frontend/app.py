@@ -1,21 +1,11 @@
-import argparse
-import sys
+import os
 from io import StringIO
 
 import pandas as pd
 import requests
 import streamlit as st
 
-
-def parse_args(args):
-    parser = argparse.ArgumentParser()
-    parser.add_argument("--prediction-service-url")
-    return parser.parse_args(args)
-
-
-args = parse_args(sys.argv[1:])
-
-prediction_service_url = args.prediction_service_url
+prediction_service_url = os.getenv("PREDICTION_SERVICE_URL")
 
 
 st.title("Santander Customer Transaction Prediction")
