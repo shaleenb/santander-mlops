@@ -20,6 +20,21 @@ async def predict(
     id_column: str | None = None,
     response_format: str = "json",
 ):
+    """
+    Make predictions on the uploaded CSV file using the trained model.
+
+    Args:
+        file (UploadFile): The uploaded CSV file.
+        id_column (str, optional): The name of the ID column. Defaults to None.
+        response_format (str, optional): The format of the response. Defaults to "json".
+            Allowed values: "json", "csv".
+
+    Returns:
+        JSONResponse | FileResponse: The predictions in the specified format.
+
+    Raises:
+        HTTPException: If an error occurs while reading the uploaded file or making predictions.
+    """
     try:
         df = pd.read_csv(file.file)
     except Exception as e:
@@ -66,4 +81,10 @@ async def predict(
 
 @app.get("/health")
 async def health_check():
+    """
+    Check the health of the API.
+
+    Returns:
+        dict: The status of the API.
+    """
     return {"status": "ok"}
