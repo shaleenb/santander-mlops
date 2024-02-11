@@ -5,7 +5,7 @@ import joblib
 import pandas as pd
 from config import settings
 from fastapi import FastAPI, File, HTTPException, UploadFile
-from fastapi.responses import FileResponse
+from fastapi.responses import FileResponse, JSONResponse
 from starlette.background import BackgroundTask
 
 app = FastAPI()
@@ -50,7 +50,7 @@ async def predict(
     prediction_series.name = "Prediction"
 
     if response_format == "json":
-        return prediction_series.to_dict()
+        return JSONResponse(prediction_series.to_dict())
     elif response_format == "csv":
         # This is to avoid race conditions when serving multiple requests.
         tmp_file = f"temp/{uuid4()}.csv"
