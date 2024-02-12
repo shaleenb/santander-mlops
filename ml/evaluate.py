@@ -1,14 +1,15 @@
-import joblib
 from sklearn import metrics
 import typer
 from utils import load_data
+import pandas as pd
+import joblib
 
 
 def load_model(filepath):
     return joblib.load(filepath)
 
 
-def evaluate_model(model, X_test, y_test):
+def evaluate_model(model, X_test: pd.DataFrame, y_test: pd.Series):
     predictions = model.predict(X_test)
     f1_score = metrics.f1_score(y_test, predictions)
     roc_auc = metrics.roc_auc_score(y_test, model.predict_proba(X_test)[:, 1])

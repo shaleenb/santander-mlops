@@ -6,9 +6,11 @@ from sklearn.model_selection import train_test_split
 from evaluate import evaluate_model
 from sklearn.pipeline import Pipeline
 from utils import load_data
+import pandas as pd
+from typing import Any
 
 
-def train_model(X, y):
+def train_model(X: pd.DataFrame, y: pd.DataFrame):
     features = X.columns.tolist()
     pipeline = Pipeline(
         [
@@ -29,7 +31,7 @@ def train_model(X, y):
     return pipeline
 
 
-def save_model(model, filepath):
+def save_model(model: Any, filepath: str):
     joblib.dump(model, filepath)
 
 
