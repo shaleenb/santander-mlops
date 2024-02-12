@@ -2,7 +2,7 @@
 
 This project is designed as an example for streamlining and automating machine learning projects. This project integrates modern MLOps practices, including continuous integration (CI), continuous deployment (CD), and automated machine learning model evaluation, training, and deployment.
 
-View the live application [here](https://santander-frontend-jlgkdezfva-uc.a.run.app/)!
+View the live application [here](https://santander-frontend-jlgkdezfva-em.a.run.app/)!
 
 ## Project Structure
 
@@ -178,13 +178,6 @@ This project uses GitHub Actions and Google Cloud Build for CI/CD. The workflows
 **CI Workflow:** Runs on every push to main and on pull requests, executing linting, testing, and building Docker images.
 **CD Workflow:** Triggers when a new tag is pushed to the repository, evaluating the model and deploying the application to Google Cloud Run if the model meets predefined performance thresholds.
 
-## Project Roadmap
-
-- [ ] Add MLFlow for model tracking and experiment management
-- [ ] Add model monitoring and alerting using Prometheus, Grafana and Evidently
-- [ ] Use monitoring metrics to trigger retraining and deployment of the model
-- [ ] Add API authentication
-
 ## Tools and Frameworks used
 
 - **FastAPI**
@@ -200,6 +193,15 @@ This project uses GitHub Actions and Google Cloud Build for CI/CD. The workflows
   - Makes continuous deployment easy with Cloud Build Triggers.
 - **Typer**
   - Like its developer says, it's the FastAPI of CLIs.
+
+## Future Work
+
+- [ ] Add MLFlow for model tracking and experiment management
+- [ ] Add model monitoring and alerting using Prometheus, Grafana and Evidently
+- [ ] Use monitoring metrics to trigger retraining and deployment of the model
+- [ ] Add API authentication
+- [ ] Store model binary in a cloud storage bucket and load it from there
+
 
 ## Notes
 
