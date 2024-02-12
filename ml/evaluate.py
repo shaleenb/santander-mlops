@@ -5,11 +5,11 @@ import pandas as pd
 import joblib
 
 
-def load_model(filepath):
+def load_model(filepath: str):
     return joblib.load(filepath)
 
 
-def evaluate_model(model, X_test: pd.DataFrame, y_test: pd.Series):
+def evaluate_model(model, X_test: pd.DataFrame, y_test: pd.Series) -> dict[str, float]:
     predictions = model.predict(X_test)
     f1_score = metrics.f1_score(y_test, predictions)
     roc_auc = metrics.roc_auc_score(y_test, model.predict_proba(X_test)[:, 1])

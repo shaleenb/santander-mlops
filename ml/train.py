@@ -10,7 +10,7 @@ import pandas as pd
 from typing import Any
 
 
-def train_model(X: pd.DataFrame, y: pd.DataFrame):
+def train_model(X: pd.DataFrame, y: pd.DataFrame) -> Pipeline:
     features = X.columns.tolist()
     pipeline = Pipeline(
         [

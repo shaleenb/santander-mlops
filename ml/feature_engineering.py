@@ -9,7 +9,7 @@ class FeatureEngineering(BaseEstimator, TransformerMixin):
     def fit(self, data, y=None):
         return self
 
-    def transform(self, data: pd.DataFrame):
+    def transform(self, data: pd.DataFrame) -> pd.DataFrame:
         data_fe = data.copy()
         data_fe["sum"] = data[self.features].sum(axis=1)
         data_fe["min"] = data[self.features].min(axis=1)

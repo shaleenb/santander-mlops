@@ -4,7 +4,7 @@ from uuid import uuid4
 import joblib
 import pandas as pd
 from config import settings
-from fastapi import FastAPI, File, HTTPException, UploadFile
+from fastapi import FastAPI, File, HTTPException, UploadFile, Query
 from fastapi.responses import FileResponse, JSONResponse
 from starlette.background import BackgroundTask
 
@@ -16,25 +16,33 @@ model = joblib.load(settings.MODEL_PATH)
 # TODO: async this
 @app.post("/predict")
 async def predict(
-    file: UploadFile = File(...),
-    id_column: str | None = None,
-    response_format: str = "json",
+    file: UploadFile = File(..., description="The CSV file containing the data for prediction."),
+    id_column: str | None = Query(
+        None,
+        alias="id_column",
+        description="The name of the ID column in the CSV file.",
+    ),
+    response_format: str = Query(
+        "json",
+        alias="response_format",
+        description="The format in which the predictions should be returned.",
+    ),
 ):
     """
     Makes predictions on the uploaded file.
 
-    Parameters:
-    - file: UploadFile object representing the CSV file containing the data for prediction.
-    - id_column: Optional string representing the name of the ID column in the CSV file. If not provided, the default ID column will be used.
-    - response_format: String representing the format in which the predictions should be returned. Valid values are 'json' and 'csv'.
+    **Parameters**:
+    - `file`: UploadFile object representing the CSV file containing the data for prediction.
+    - `id_column`: Optional string representing the name of the ID column in the CSV file. If not provided, the default ID column will be used.
+    - `response_format`: String representing the format in which the predictions should be returned. Valid values are `json` and `csv`.
 
-    Returns:
-    - If response_format is 'json', returns a JSONResponse object containing the predictions as a dictionary.
-    - If response_format is 'csv', returns a FileResponse object containing the predictions as a CSV file.
+    **Returns**:
+    - If response_format is `json`, returns a `JSONResponse` object containing the predictions as a dictionary.
+    - If response_format is `csv`, returns a `FileResponse` object containing the predictions as a CSV file.
 
-    Raises:
-    - HTTPException with status code 400 if an error occurs while reading the uploaded file or if the ID column is not found.
-    - HTTPException with status code 500 if an error occurs while making predictions.
+    **Raises**:
+    - `HTTPException` with status code 400 if an error occurs while reading the uploaded file or if the ID column is not found.
+    - `HTTPException` with status code 500 if an error occurs while making predictions.
     """
     try:
         df = pd.read_csv(file.file)
