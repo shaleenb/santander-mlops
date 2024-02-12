@@ -8,6 +8,8 @@ class Settings(BaseSettings):
 
     DEFAULT_ID_COLUMN: str = "ID_code"
 
+    MODEL_FEATURES: list[str] = [f"var_{i}" for i in range(200)]
+
     class config:
         case_sensitive = True
 

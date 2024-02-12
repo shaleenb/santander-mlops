@@ -3,19 +3,19 @@ from uuid import uuid4
 
 import joblib
 import pandas as pd
-from config import settings
-from fastapi import FastAPI, File, HTTPException, UploadFile, Query
+from backend.config import settings
+from fastapi import FastAPI, File, HTTPException, Query, UploadFile
 from fastapi.responses import FileResponse, JSONResponse
 from starlette.background import BackgroundTask
+from backend.utils import validate_data
 
 app = FastAPI()
 
 model = joblib.load(settings.MODEL_PATH)
 
 
-# TODO: async this
 @app.post("/predict")
-async def predict(
+def predict(
     file: UploadFile = File(..., description="The CSV file containing the data for prediction."),
     id_column: str | None = Query(
         None,
@@ -41,7 +41,12 @@ async def predict(
     - If response_format is `csv`, returns a `FileResponse` object containing the predictions as a CSV file.
 
     **Raises**:
-    - `HTTPException` with status code 400 if an error occurs while reading the uploaded file or if the ID column is not found.
+    - `HTTPException` with status code 400 if:
+        - An error occurs while reading the uploaded file
+        - The ID column is not found.
+        - One or more feature columns are missing.
+        - The type of the features in the uploaded file doesn't match the expected types.
+
     - `HTTPException` with status code 500 if an error occurs while making predictions.
     """
     try:
@@ -54,13 +59,12 @@ async def predict(
 
     id_column = id_column or settings.DEFAULT_ID_COLUMN
 
-    if id_column not in df.columns:
-        raise HTTPException(
-            status_code=400,
-            detail=f"ID column '{id_column}' not found in the uploaded file.",
-        )
+    features = settings.MODEL_FEATURES
 
-    features = [col for col in df.columns if col != id_column]
+    try:
+        validate_data(df, id_column)
+    except ValueError as e:
+        raise HTTPException(status_code=400, detail=str(e))
 
     try:
         predictions = model.predict(df[features])
