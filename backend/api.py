@@ -21,19 +21,20 @@ async def predict(
     response_format: str = "json",
 ):
     """
-    Make predictions on the uploaded CSV file using the trained model.
+    Makes predictions on the uploaded file.
 
-    Args:
-        file (UploadFile): The uploaded CSV file.
-        id_column (str, optional): The name of the ID column. Defaults to None.
-        response_format (str, optional): The format of the response. Defaults to "json".
-            Allowed values: "json", "csv".
+    Parameters:
+    - file: UploadFile object representing the CSV file containing the data for prediction.
+    - id_column: Optional string representing the name of the ID column in the CSV file. If not provided, the default ID column will be used.
+    - response_format: String representing the format in which the predictions should be returned. Valid values are 'json' and 'csv'.
 
     Returns:
-        JSONResponse | FileResponse: The predictions in the specified format.
+    - If response_format is 'json', returns a JSONResponse object containing the predictions as a dictionary.
+    - If response_format is 'csv', returns a FileResponse object containing the predictions as a CSV file.
 
     Raises:
-        HTTPException: If an error occurs while reading the uploaded file or making predictions.
+    - HTTPException with status code 400 if an error occurs while reading the uploaded file or if the ID column is not found.
+    - HTTPException with status code 500 if an error occurs while making predictions.
     """
     try:
         df = pd.read_csv(file.file)
@@ -85,6 +86,6 @@ async def health_check():
     Check the health of the API.
 
     Returns:
-        dict: The status of the API.
+    - The status of the API
     """
     return {"status": "ok"}
