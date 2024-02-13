@@ -11,7 +11,14 @@ from backend.utils import validate_data
 
 app = FastAPI()
 
-model = joblib.load(settings.MODEL_PATH)
+_model = None
+
+
+def get_model():
+    global _model
+    if _model is None:
+        _model = joblib.load(settings.MODEL_PATH)
+    return _model
 
 
 @app.post("/predict")
@@ -67,6 +74,7 @@ def predict(
         raise HTTPException(status_code=400, detail=str(e))
 
     try:
+        model = get_model()
         predictions = model.predict(df[features])
     except Exception as e:
         raise HTTPException(
