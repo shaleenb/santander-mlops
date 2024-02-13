@@ -20,7 +20,12 @@ def validate_data(df: pd.DataFrame, id_column: str) -> None:
 
     features = settings.MODEL_FEATURES
 
-    if missing_features := set(features) - set(df.columns):
+    missing_features = []
+    for feature in features:
+        if feature not in df.columns:
+            missing_features.append(feature)
+
+    if missing_features:
         missing_features_str = ", ".join(missing_features)
         raise ValueError(
             f"The following features are missing from the uploaded csv: {missing_features_str}"
