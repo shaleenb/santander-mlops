@@ -1,7 +1,7 @@
-import pytest
 import pandas as pd
+import pytest
+
 from backend.config import settings
-from io import StringIO
 
 
 @pytest.fixture
@@ -16,16 +16,23 @@ def sample_dataframe():
 
 
 @pytest.fixture
-def valid_file_object(sample_dataframe):
-    string_buffer = StringIO()
-    sample_dataframe.to_csv(string_buffer, index=False)
-    string_buffer.seek(0)
-    return string_buffer
+def valid_csv_file(tmp_path, sample_dataframe):
+    file_path = tmp_path / "sample.csv"
+    sample_dataframe.to_csv(file_path, index=False)
+    return file_path
 
 
 @pytest.fixture
-def invalid_file_object():
-    string_buffer = StringIO()
-    string_buffer.write("col1,col2\n1,2,3,4")
-    string_buffer.seek(0)
-    return string_buffer
+def bad_csv_file(tmp_path):
+    file_path = tmp_path / "invalid.csv"
+    with open(file_path, "w") as file:
+        file.write("column1,column2\nvalue1,value2")
+    return file_path
+
+
+@pytest.fixture
+def empty_file(tmp_path):
+    file_path = tmp_path / "invalid.csv"
+    with open(file_path, "w") as file:
+        file.write("")
+    return file_path
