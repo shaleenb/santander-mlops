@@ -17,6 +17,7 @@ st.write(
 file = st.file_uploader("Upload a CSV file", type=["csv"])
 id_column = st.text_input("ID column", "ID_code")
 response_format = st.selectbox("Response format", ["json", "csv"])
+include_confidence = st.checkbox("Include confidence scores")
 as_file = st.checkbox("Download as file")
 
 if file:
@@ -25,26 +26,34 @@ if file:
         response = requests.post(
             f"{prediction_service_url}/predict",
             files={"file": file},
-            params={"id_column": id_column, "response_format": response_format},
+            params={
+                "id_column": id_column,
+                "response_format": response_format,
+                "include_confidence": include_confidence,
+            },
         )
-        if response_format == "json":
-            if as_file:
-                st.download_button(
-                    "Download JSON",
-                    response.content,
-                    file_name="predictions.json",
-                    mime="application/json",
-                )
-            else:
-                st.json(response.json())
-        elif response_format == "csv":
-            if as_file:
-                st.download_button(
-                    "Download CSV",
-                    response.content,
-                    file_name="predictions.csv",
-                    mime="text/csv",
-                )
-            else:
-                df = pd.read_csv(StringIO(response.text), index_col=id_column)
-                st.table(df)
+        if not response.ok:
+            st.write("An error occurred with the request:")
+            st.write(response.json()["detail"])
+        else:
+            if response_format == "json":
+                if as_file:
+                    st.download_button(
+                        "Download JSON",
+                        response.content,
+                        file_name="predictions.json",
+                        mime="application/json",
+                    )
+                else:
+                    st.json(response.json())
+            elif response_format == "csv":
+                if as_file:
+                    st.download_button(
+                        "Download CSV",
+                        response.content,
+                        file_name="predictions.csv",
+                        mime="text/csv",
+                    )
+                else:
+                    df = pd.read_csv(StringIO(response.text), index_col=id_column)
+                    st.dataframe(df)

@@ -34,6 +34,11 @@ def predict(
         alias="response_format",
         description="The format in which the predictions should be returned.",
     ),
+    include_confidence: bool = Query(
+        False,
+        alias="include_confidence",
+        description="Whether to include confidence scores in the predictions.",
+    ),
 ):
     """
     Makes predictions on the uploaded file.
@@ -76,22 +81,24 @@ def predict(
     try:
         model = get_model()
         predictions = model.predict(df[features])
+        if include_confidence:
+            confidence = model.predict_proba(df[features]).max(axis=1)
     except Exception as e:
         raise HTTPException(
             status_code=500, detail=f"An error occurred while making predictions: {e}"
         )
 
-    prediction_series = pd.Series(predictions, index=df[id_column])
-    prediction_series.index.name = id_column
-    prediction_series.name = "Prediction"
+    prediction_df = pd.DataFrame({"Prediction": predictions}, index=df[id_column])
+    if include_confidence:
+        prediction_df["Confidence"] = confidence
 
     if response_format == "json":
-        return JSONResponse(prediction_series.to_dict())
+        return JSONResponse(prediction_df.to_dict(orient="index"))
     elif response_format == "csv":
         # This is to avoid race conditions when serving multiple requests.
         tmp_file = f"temp/{uuid4()}.csv"
         os.makedirs("temp", exist_ok=True)
-        prediction_series.to_csv(tmp_file, index_label=id_column)
+        prediction_df.to_csv(tmp_file, index_label=id_column)
         return FileResponse(
             tmp_file,
             media_type="text/csv",
