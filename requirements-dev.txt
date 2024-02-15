@@ -1,0 +1,5 @@
+pytest==8.0.0
+pytest-cov==4.1.0
+pytest-html==4.1.1
+bandit==1.7.7
+ruff==0.2.1
