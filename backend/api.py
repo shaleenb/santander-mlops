@@ -47,6 +47,7 @@ def predict(
     - `file`: UploadFile object representing the CSV file containing the data for prediction.
     - `id_column`: Optional string representing the name of the ID column in the CSV file. If not provided, the default ID column will be used.
     - `response_format`: String representing the format in which the predictions should be returned. Valid values are `json` and `csv`.
+    - `include_confidence`: Boolean representing whether to include confidence scores in the predictions.
 
     **Returns**:
     - If response_format is `json`, returns a `JSONResponse` object containing the predictions as a dictionary.
