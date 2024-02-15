@@ -22,18 +22,18 @@ jobs:
         run: |
           docker run --name mlops-tests mlops-backend /bin/bash -c "\
           pip install pytest pytest-cov pytest-html httpx bandit && \
-          pytest --cov=. --cov-report=xml:coverage.xml --html=pytest.html && \
+          pytest --cov=. --cov-report=html:coverage.html --html=pytest.html && \
           bandit -r --exclude tests . -f html -o bandit.html"
       - name: Copy Reports from Container
         run: |
-          docker cp mlops-tests:pytest.html pytest.html
-          docker cp mlops-tests:coverage.xml coverage.xml
-          docker cp mlops-tests:bandit.html bandit.html
+          docker cp mlops-tests:/app/pytest.html pytest.html
+          docker cp mlops-tests:/app/coverage.html coverage.html
+          docker cp mlops-tests:/app/bandit.html bandit.html
       - name: Upload Testing Reports as Artifacts
         uses: actions/upload-artifact@v2
         with:
           name: Testing Reports
           path: |
             ./pytest.html
-            ./coverage.xml
+            ./coverage.html
             ./bandit.html
