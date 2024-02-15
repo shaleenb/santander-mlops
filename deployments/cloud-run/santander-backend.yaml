@@ -1,0 +1,55 @@
+apiVersion: serving.knative.dev/v1
+kind: Service
+metadata:
+  annotations:
+    run.googleapis.com/ingress: all
+    run.googleapis.com/ingress-status: all
+    run.googleapis.com/operation-id: bd33ee13-e701-429a-be7e-8bdd491a194e
+  labels:
+    cloud.googleapis.com/location: asia-south2
+    commit-sha: e932c4aad8c430329669a18dbe725d090ff892dc
+    gcb-build-id: 366444d9-1bea-48b1-9c61-9e5ca9a6e36a
+    gcb-trigger-id: 6e43f0af-e3ba-4d48-82c4-3b47ae8776d7
+    gcb-trigger-region: global
+    managed-by: gcp-cloud-build-deploy-cloud-run
+  name: santander-backend
+  namespace: '311376739431'
+spec:
+  template:
+    metadata:
+      annotations:
+        autoscaling.knative.dev/maxScale: '5'
+        run.googleapis.com/client-name: gcloud
+        run.googleapis.com/client-version: 464.0.0
+        run.googleapis.com/startup-cpu-boost: 'true'
+      labels:
+        client.knative.dev/nonce: ucpouczfrj
+        commit-sha: e932c4aad8c430329669a18dbe725d090ff892dc
+        gcb-build-id: 366444d9-1bea-48b1-9c61-9e5ca9a6e36a
+        gcb-trigger-id: 6e43f0af-e3ba-4d48-82c4-3b47ae8776d7
+        gcb-trigger-region: global
+        managed-by: gcp-cloud-build-deploy-cloud-run
+        run.googleapis.com/startupProbeType: Default
+    spec:
+      containerConcurrency: 20
+      containers:
+      - image: asia-south2-docker.pkg.dev/santander-mlops/cloud-run-source-deploy/santander-mlops/santander-backend:e932c4aad8c430329669a18dbe725d090ff892dc
+        name: santander-mlops-backend-1
+        ports:
+        - containerPort: 8000
+          name: http1
+        resources:
+          limits:
+            cpu: 1000m
+            memory: 512Mi
+        startupProbe:
+          failureThreshold: 1
+          periodSeconds: 240
+          tcpSocket:
+            port: 8000
+          timeoutSeconds: 240
+      serviceAccountName: santander-mlops@appspot.gserviceaccount.com
+      timeoutSeconds: 300
+  traffic:
+  - latestRevision: true
+    percent: 100

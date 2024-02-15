@@ -1,0 +1,58 @@
+apiVersion: serving.knative.dev/v1
+kind: Service
+metadata:
+  annotations:
+    run.googleapis.com/ingress: all
+    run.googleapis.com/ingress-status: all
+    run.googleapis.com/operation-id: d13176c2-a56b-4834-8fb6-63cf4cc828c2
+  labels:
+    cloud.googleapis.com/location: asia-south2
+    commit-sha: e932c4aad8c430329669a18dbe725d090ff892dc
+    gcb-build-id: b9e1d379-054f-46b5-b38f-717c01d97f87
+    gcb-trigger-id: acdb1bec-65fb-4f85-828a-a2fb36729a7c
+    gcb-trigger-region: global
+    managed-by: gcp-cloud-build-deploy-cloud-run
+  name: santander-frontend
+  namespace: '311376739431'
+spec:
+  template:
+    metadata:
+      annotations:
+        autoscaling.knative.dev/maxScale: '100'
+        run.googleapis.com/client-name: gcloud
+        run.googleapis.com/client-version: 464.0.0
+        run.googleapis.com/startup-cpu-boost: 'true'
+      labels:
+        client.knative.dev/nonce: fqumkkydui
+        commit-sha: e932c4aad8c430329669a18dbe725d090ff892dc
+        gcb-build-id: b9e1d379-054f-46b5-b38f-717c01d97f87
+        gcb-trigger-id: acdb1bec-65fb-4f85-828a-a2fb36729a7c
+        gcb-trigger-region: global
+        managed-by: gcp-cloud-build-deploy-cloud-run
+        run.googleapis.com/startupProbeType: Default
+    spec:
+      containerConcurrency: 80
+      containers:
+      - env:
+        - name: PREDICTION_SERVICE_URL
+          value: https://santander-backend-jlgkdezfva-em.a.run.app
+        image: asia-south2-docker.pkg.dev/santander-mlops/cloud-run-source-deploy/santander-mlops/santander-frontend:e932c4aad8c430329669a18dbe725d090ff892dc
+        name: santander-mlops-frontend-1
+        ports:
+        - containerPort: 8501
+          name: http1
+        resources:
+          limits:
+            cpu: 1000m
+            memory: 512Mi
+        startupProbe:
+          failureThreshold: 1
+          periodSeconds: 240
+          tcpSocket:
+            port: 8501
+          timeoutSeconds: 240
+      serviceAccountName: 311376739431-compute@developer.gserviceaccount.com
+      timeoutSeconds: 300
+  traffic:
+  - latestRevision: true
+    percent: 100

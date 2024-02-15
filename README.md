@@ -37,7 +37,6 @@ The project is structured as follows:
 santander-mlops/
 ├── backend/
 │   ├── tests/
-│   │   ├── __pycache__/
 │   │   ├── __init__.py
 │   │   ├── conftest.py
 │   │   ├── test_api.py
@@ -47,6 +46,13 @@ santander-mlops/
 │   ├── config.py
 │   ├── requirements.txt
 │   └── utils.py
+├── deployments/
+│   ├── cloud-build/
+│   │   ├── santander-backend.yaml
+│   │   └── santander-frontend.yaml
+│   └── cloud-run/
+│       ├── santander-backend.yaml
+│       └── santander-frontend.yaml
 ├── frontend/
 │   ├── __init__.py
 │   ├── app.py
@@ -65,7 +71,7 @@ santander-mlops/
 │   ├── train.py
 │   └── utils.py
 ├── notebooks/
-│   ├── random_forest.ipynb
+│   └── random_forest.ipynb
 ├── scripts/
 ├── README.md
 ├── backend.dockerfile
@@ -225,6 +231,8 @@ This project uses GitHub Actions and Google Cloud Build for CI/CD. The workflows
 - [ ] Add API authentication
 - [ ] Store model binary in a cloud storage bucket and load it from there
 - [ ] Use poetry for dependency management
+- [ ] Improve CI/CD
+  - [ ] Fail pipelines if tests fail
 
 ## Notes
 
