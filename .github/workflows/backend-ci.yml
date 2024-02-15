@@ -27,6 +27,7 @@ jobs:
       - name: Copy Reports from Container
         run: |
           docker cp mlops-tests:/app/pytest.html pytest.html
+          docker cp mlops-tests:/app/assets assets
           docker cp mlops-tests:/app/coverage.html coverage.html
           docker cp mlops-tests:/app/bandit.html bandit.html
       - name: Upload Testing Reports as Artifacts
@@ -35,5 +36,6 @@ jobs:
           name: Testing Reports
           path: |
             ./pytest.html
+            ./assets
             ./coverage.html
             ./bandit.html
