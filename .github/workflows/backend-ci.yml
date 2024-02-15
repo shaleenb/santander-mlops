@@ -8,11 +8,7 @@ on:
     branches: ["main"]
     paths: ["backend/**"]
   workflow_dispatch:
-    inputs:
-      docker_tag:
-        description: "Docker Tag"
-        required: false
-        default: "latest"
+
 
 jobs:
   build_and_test:
@@ -21,19 +17,18 @@ jobs:
       - uses: actions/checkout@v3
       - name: Build the Docker image
         run: |
-          DOCKER_TAG=${{ github.run_id }} || echo "latest"
-          docker build . --file backend.dockerfile --tag mlops-backend:$DOCKER_TAG
+          docker build . --file backend.dockerfile --tag mlops-backend
       - name: Run Container & Perform Tests
         run: |
-          docker run --name mlops-tests mlops-backend:$DOCKER_TAG /bin/bash -c "\
+          docker run --name mlops-tests mlops-backend /bin/bash -c "\
           pip install pytest pytest-cov pytest-html httpx bandit && \
           pytest --cov=. --cov-report=xml:coverage.xml --html=pytest.html && \
           bandit -r --exclude tests . -f html -o bandit.html"
       - name: Copy Reports from Container
         run: |
-          docker cp mlops-tests:/pytest.html pytest.html
-          docker cp mlops-tests:/coverage.xml coverage.xml
-          docker cp mlops-tests:/bandit.html bandit.html
+          docker cp mlops-tests:pytest.html pytest.html
+          docker cp mlops-tests:coverage.xml coverage.xml
+          docker cp mlops-tests:bandit.html bandit.html
       - name: Upload Testing Reports as Artifacts
         uses: actions/upload-artifact@v2
         with:
