@@ -31,6 +31,7 @@ if file:
                 "response_format": response_format,
                 "include_confidence": include_confidence,
             },
+            timeout=120,
         )
         if not response.ok:
             st.write("An error occurred with the request:")
